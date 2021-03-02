@@ -1,0 +1,259 @@
+html {
+    height:100%; 
+}
+
+* {
+    margin: 0;
+    padding: 0;
+}
+
+body {
+    font: normal 1em helvetica, sans-serif;
+    border: 1px solid transparent;
+    background: rgb(165, 104, 104); /* sets background color */
+    color: rgb(8, 8, 8); 
+}
+
+p {
+    padding: 0 0 16px 0;
+    line-height: 1.7em;
+}
+
+h1, h2, h3, h4, h5{
+    font: normal 175% 'century gothic', helvetica, sans-serif;
+    color: #111; /* sets color of text  */
+    margin: 0 0 15px 0;
+    padding: 15px 0 5px 0;
+}
+
+h1 {
+    font-weight: bold; /* makes text bold */
+}
+
+h3 {
+    font-weight: bold;
+}
+
+h4, h5 {
+    margin: 0;
+    padding: 0 0 5px 0;
+    font: normal 120% helvetica, sans-sarif;
+    color: rgb(17, 16, 16);
+    font-weight:bold;
+}
+
+h5, h6 {
+    font: italic 95% helvetica, sans-sarif;
+    padding: 0 0 15px 0;
+    color: #000;
+}
+a, a:hover {
+    outline: none;
+    color: #111;
+    text-decoration: underline;
+}
+
+a:hover {
+    text-decoration: none;
+}
+
+ul {
+    margin: 2px 0 22px 17px;
+}
+
+ul li {
+    list-style-type: circle;
+    margin: 0 0 6px 0;
+    padding: 0 0 4px 5px;
+}
+
+#header, #logo, #menubar, #site_content, #footer {
+    margin-left: auto;
+    margin-right: auto;
+}
+
+#header {
+    width: 890px;
+}
+
+#logo { /* sets the header picture, dimensions, etc.  */
+    width: 890px;
+    background: url(images/worldmap2.png) no-repeat;
+    position: relative;
+    height: 200px;
+}
+
+#logo_text {
+    position: absolute;
+    top: 0px;
+    left: 150px;
+}
+
+#logo h1, #logo h2 {
+    font: normal 250% 'century gothic', helvetica, sans-serif;
+    border-bottom: 0; 
+    text-transform: none;
+    margin: 0;
+}
+
+#logo_text h1, #logo_text h1 a, #logo_text h1 a:hover {
+    padding: 10px 0 0 0;
+    font-weight: bold;
+    color: rgb(12, 11, 11);
+    letter-spacing: 0.1em;
+    text-decoration: none;
+}
+
+.logo_color {
+    color: #555;
+}
+
+#logo_text h2 {
+    font-size: 130%;
+    padding: 0;
+    color: #444;
+}
+
+#menubar { /* sets positioning of the menubar - mine is to the right */
+    width: 890px;
+    height: 35px;
+    padding: 8px 0 0 0;
+    margin: -45px 0 0 0;
+    position: relative;
+    z-index: 1;
+    float: right;
+    overflow: hidden;
+}
+
+ul#menu { /* same as #menu */
+    float: right;
+    margin: 0;
+}
+
+ul#menu li {
+    float: left;
+    margin: 5px 0 0 0;
+    padding: 0 0 0 6px;
+    list-style: none;
+}
+
+ul#menu li a {
+    letter-spacing: 0em;
+    font: normal 105% helvetica, sans-serif;
+    text-transform: uppercase;
+    font-weight: bold;
+    display: block;
+    float: left;
+    height: 20px;
+    text-decoration: none;
+    padding: 9px 22px 5px 16px;
+    text-align: center;
+    color: rgb(15, 15, 15);
+    border: 0;
+}
+
+ul#menu li.selected a {
+    height: 25px;
+    color: #111;
+    padding: 7px 22px 5px 16px;
+}
+
+ul#menu li.selected {
+    margin: 0px;
+    background: rgb(199, 182, 182);
+}
+
+ul #menu li a:hover {
+    color: #888;
+}
+
+#site_content {
+    width: 890px;
+    overflow: hidden;
+    background: white;
+}
+
+.sidebar {
+    float: right;
+    width: 198px;
+    padding: 25px 25px 15px 15px;
+}
+
+.sidebar ul {
+    width: 178px;
+    padding: 4px 0 0 0;
+    margin: 4px 0 30px 0;
+}
+
+.sidebar li {
+    list-style: none;
+    padding: 0 0 7px 0;
+}
+
+.sidebar li a, .sidebar li a:hover {
+    padding: 0 0 0 40px;
+    display: block;
+    background: transparent url(images/bullet1.png) no-repeat left center;
+}
+
+.sidebar li a.selected {
+    color: rgb(15, 15, 15);
+    text-decoration: none;
+}
+
+#content { /* used for content where there is a sidebar on the page  */ 
+    text-align: left;
+    width: 600px;
+    float: left;
+    padding: 25px 0 15px 30px;
+}
+
+#content_two { /* used for content where there was no sidebar on the page */
+     width: 800px;
+     padding: 20px 0 15px 30px;
+
+}
+
+.image1 { /* image for the world bank on the source page - sets positioning  */
+    border-radius: 0px;
+    position: relative;
+    left: 450px;
+    bottom: 230px;
+}
+
+.image2 { /* image for SIPRI on the source page - sets positioning */
+    border-radius: 0px;
+    position: relative;
+    left: 245px;
+    bottom: 70px;
+}
+
+#content ul {
+    margin: 2px 0 22px 0;
+}
+
+#content ul li {
+    list-style: none;
+    background: url(images/bullet.png) no-repeat;
+    margin: 0 0 6px 0;
+    padding: 0 0 4px 25px;
+    line-height: 1.5em;
+}
+
+#footer {
+    width: 890px;
+    height: 33px;
+    padding: 20px 0 4px 0;
+    text-align: center;
+    background: rgb(199, 182, 182);
+    color: rgb(17, 16, 16);
+    border-top: 1px solid #fff;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    font-size: 80%;
+}
+
+#footer a, #footer a:hover {
+    color: rgb(17, 16, 16);
+    text-decoration: none;
+}

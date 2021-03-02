@@ -1,0 +1,385 @@
+<!DOCTYPE html>
+
+<html>
+<head>
+    <title> Spending Analysis</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="shortcut icon" type="image/x-icon" href="images/dollarsign.jpg" />
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=1024, initial-scale=1.0">
+    <script src="https://www.gstatic.com/charts/loader.js"></script>
+    <script>
+        google.charts.load('current', {'packages':['corechart']}); // selecting corechart from the Google API charts 
+        google.charts.setOnLoadCallback(drawAllSheets);
+
+        function drawAllSheets() {
+            drawSheetName('total_mil', 'SELECT A,B,C,D,E,F', totalMilResponseHandler);
+            drawSheetName('total_health_spending', 'SELECT A,B,C,D,E,F', totalHealthResponseHandler);
+            drawSheetName('total_education_spending', 'SELECT A,B,C,D,E,F', totalEducationResponseHandler);
+            drawSheetName('total_spending_avg', 'SELECT A,B,C,D', avgCompareTotalResponseHandler);
+            drawSheetName('mil_spend_percent_gdp', 'SELECT A,B,C,D,E,F', militaryVsGdpResponseHandler);
+            drawSheetName('health_spend_percent_gdp', 'SELECT A,B,C,D,E,F', healthcareVsGdpResponseHandler);
+            drawSheetName('education_spend_percent_gdp', 'SELECT A,B,C,D,E,F', educationVsGdpResponseHandler);
+            drawSheetName('gdp_stacked', 'SELECT A,B,C,D,F', avgCompareGdpResponseHandler);
+            drawSheetName('mil_spend_per_capita', 'SELECT A,B,C,D,E,F', milPerCapResponseHandler);
+            drawSheetName('health_spend_per_capita', 'SELECT A,B,C,D,E,F', healthPerCapResponseHandler);
+            drawSheetName('education_spend_per_capita', 'SELECT A,B,C,D,E,F', educationPerCapResponseHandler);
+            drawSheetName('per_cap_avg', 'SELECT A,B,C,D,E', avgCompareCapResponseHandler);
+        } //drawAllSheets - drawing the sheet name and columns being used for each graph 
+
+        function drawSheetName(sheetName, query, responseHandler){
+            var queryString = encodeURIComponent(query);
+            var query = new google.visualization.Query(
+                'https://docs.google.com/spreadsheets/d/1GXR6MpXO6armxVtj1GCaCp0sXbGGTZiy-9iBxSWEW0k/gviz/tq?sheet='
+                + sheetName + '&headers=1&tq=' + queryString);
+            
+            query.send(responseHandler);
+        } //drawSheetName
+
+        function checkError(response){
+            if (response.isError()) {
+                alert('Error in query: ' + response.getMessage() + ' ' + response.getDetailedMessage());
+                return;
+            }
+        } //checkError
+
+        function totalMilResponseHandler(response){
+            checkError(response);
+            var data = response.getDataTable();
+            data.sort({column: 5, desc: true});
+
+            var options = {
+                vAxis: {title: 'Spending (USD)'},
+                width: 800,
+                height: 400,
+            };
+
+            var chart = new google.visualization.ColumnChart(document.getElementById('total_mil_div'));
+            chart.draw(data, options);
+        } //totalMilResponseHandler
+
+        function totalHealthResponseHandler(response){
+            checkError(response);
+            var data = response.getDataTable();
+            data.sort({column: 5, desc: true});
+
+            var options = {
+                vAxis: {title: 'Spending (USD)'},
+                width: 800,
+                height: 400,
+            };
+
+            var chart = new google.visualization.ColumnChart(document.getElementById('total_health_div'));
+            chart.draw(data, options);
+        } //totalHealthResponseHandler
+
+        function totalEducationResponseHandler(response){
+            checkError(response);
+            var data = response.getDataTable();
+            data.sort({column: 5, desc: true})
+
+            var options = {
+                vAxis: {title: 'Spending (USD)'},
+                width: 800,
+                height: 400,
+            };
+
+            var chart = new google.visualization.ColumnChart(document.getElementById('total_education_div'));
+            chart.draw(data, options);
+        } //totalEducationResponseHandler
+
+        function avgCompareTotalResponseHandler(response){
+            checkError(response);
+            var data = response.getDataTable();
+            data.sort({column: 1, desc: true})
+
+            var options = {
+                vAxis: {title: 'Spending (USD)'},
+                width: 800,
+                height: 400,
+            };
+
+            var chart = new google.visualization.ColumnChart(document.getElementById('avg_compare_total_div'));
+            chart.draw(data, options);
+        } //avgCompareTotalResponseHandler
+
+        function militaryVsGdpResponseHandler(response){
+            checkError(response);
+            var data = response.getDataTable();
+            data.sort({column: 5, desc: true});
+
+            var options = {
+                vAxis: {title: '% of GDP'},
+                width: 800,
+                height: 400,
+            };
+
+            var chart = new google.visualization.LineChart(document.getElementById('military_percent_gdp_div'));
+            chart.draw(data, options);
+        } //militaryVsGdpResponseHandler
+
+        function healthcareVsGdpResponseHandler(response){
+            checkError(response);
+            var data = response.getDataTable();
+            data.sort({column: 5, desc: true});
+
+            var options = {
+                vAxis: {title: '% of GDP'},
+                width: 800,
+                height: 400,
+            };
+
+            var chart = new google.visualization.LineChart(document.getElementById('healthcare_percent_gdp_div'));
+            chart.draw(data, options);
+        } //healthcareVsGdpResponseHandler
+
+        function educationVsGdpResponseHandler(response){
+            checkError(response);
+            var data = response.getDataTable();
+            data.sort({column: 5, desc: true});
+
+            var options = {
+                vAxis: {title: '% of GDP'},
+                width: 800,
+                height: 400,
+            };
+
+            var chart = new google.visualization.LineChart(document.getElementById('education_percent_gdp_div'));
+            chart.draw(data, options);
+        } //educationVsGdpResponseHandler
+
+        function avgCompareGdpResponseHandler(response){
+            checkError(response);
+            var data = response.getDataTable();
+            data.sort({column: 4, desc: true});
+
+            var options = {
+                legend: 'top',
+                bars: 'horizontal',
+                hAxis:{title: 'Amount (USD)'},
+                isStacked: true,
+                width: 800,
+                height: 400,
+            };
+
+            var chart = new google.visualization.BarChart(document.getElementById('avg_compare_gdp_div'));
+            chart.draw(data, options);
+        } //avgCompareGdpResponseHandler
+
+        function milPerCapResponseHandler(response){
+            checkError(response);
+            var data = response.getDataTable();
+            data.sort({column: 5, desc: true});
+
+            var options = {
+                legend: 'top',
+                bars: 'horizontal',
+                hAxis: {title: 'Spending (USD)'},
+                width: 800,
+                height: 500,
+            };
+
+            var chart = new google.visualization.BarChart(document.getElementById('mil_per_cap_div'));
+            chart.draw(data, options);
+        } //milPerCapResponseHandler
+
+        function healthPerCapResponseHandler(response){
+            checkError(response);
+            var data = response.getDataTable();
+            data.sort({column: 5, desc: true});
+
+            var options = {
+                legend: 'top',
+                bars: 'horizontal',
+                hAxis: {title: 'Spending (USD)'},
+                width: 800,
+                height: 500,
+            };
+
+            var chart = new google.visualization.BarChart(document.getElementById('health_per_cap_div'));
+            chart.draw(data, options);
+        } //healthPerCapResponseHandler
+
+        function educationPerCapResponseHandler(response){
+            checkError(response);
+            var data = response.getDataTable();
+            data.sort({column: 1, desc: true});
+
+            var options = {
+                legend: 'top',
+                bars: 'horizontal',
+                hAxis: {title: 'Spending (USD)'},
+                width: 800,
+                height: 500,
+            };
+
+            var chart = new google.visualization.BarChart(document.getElementById('education_per_cap_div'));
+            chart.draw(data, options);
+        } //educationPerCapResponseHandler
+
+        function avgCompareCapResponseHandler(response){
+            checkError(response);
+            var data = response.getDataTable();
+            data.sort({column: 1, desc: true})
+
+            var options = {
+                vAxis: {title: 'Amount Per Capita (USD)'},
+                width: 800,
+                height: 400,
+            };
+
+            var chart = new google.visualization.ColumnChart(document.getElementById('avg_compare_cap_div'));
+            chart.draw(data, options);
+        } //avgCompareCapResponseHandler
+
+    </script>
+</head>   
+<body>
+        <div id="header">
+            <div id="logo">
+                <div id="logo_text">
+                    <h1><a href="index.html"> <br>  G20 Expenditure Analysis</a> </h1>
+                </div><!-- logo text-->
+            </div><!-- logo -->
+
+            <div id="menubar">
+                <ul id="menu">
+                    <li><a href="index.html">Home</a></li>
+                    <li class="selected"><a href="spending_analysis.html">Spending Analysis</a></li>
+                    <li><a href="conclusions.html">Conclusions</a></li>
+                    <li><a href="sources.html">Sources</a></li>
+                </ul><!-- menu -->
+            </div><!-- menu -->
+        </div><!-- header -->
+        <div id="site_content">
+
+            <div id="content_two">
+                <h1> Expenditure Overview by Country</h1>
+                <p>
+                We're going to start by seeing how much each country spends overall when it comes to their 
+                military, healthcare, and education. 
+                </p>
+                <h4> Total Military Expenditure</h4>
+                <div id="total_mil_div" style="width: 800px; height:400px;"></div>
+                <br>
+                <h4> Total Healthcare Expenditure</h4>
+                <div id="total_health_div" style="width: 800px; height:400px;"></div>
+                <br>
+                <h4> Total Education Spending </h4>
+                <div id="total_education_div" style="width: 800px; height:400px;"></div>
+                <br>
+                <p>
+                    It’s pretty clear to see that the US leads in all three areas of spending, with China 
+                    coming in second. It's important to note not just that the US is the leader in spending, 
+                    but how drastic the difference in spending is between the US and the other countries. 
+                    The US generally seems to be a much higher spender across the board. 
+                </p>
+                <h4> Average Military, Healthcare, & Education Spending (2013-2017) </h4>
+                <br>
+                <div id="avg_compare_total_div" style="width: 800px; height:400px;"></div>
+                <br>
+                <p>
+                    When comparing the spending within each country – basically every country spends the most 
+                    on their healthcare and the second most on their education – with the exception of China 
+                    who spends the second most on their military. It was interesting to see how much the US 
+                    spends on healthcare – even if you add their military and education spending together it 
+                    would still be almost double that amount. 
+                </p>
+    
+                <h1> Spending as a Percent of Overall GDP</h1>
+                <p>
+                    Now that we have an understanding of how much each country spends overall on their military, 
+                    healthcare, and education, let's take  a look at each country's spending in regards to 
+                    their total GDP. 
+                </p>
+                <h4> Military Spending as a % of GDP</h4>
+                <br>
+                <div id="military_percent_gdp_div" style="width: 800px; height:400px;"></div>
+                <br>
+                <p>
+                    With the exception of 2013 where the US jumps into the lead, Russia spends the highest 
+                    percentage of their GDP on their military. Russia seems to also be the only country who 
+                    crosses over that 4% mark going as high as 5.5% in 2016. 
+                </p>
+                <h4> Healthcare Spending as a % of GDP</h4>
+                <br>
+                <div id="healthcare_percent_gdp_div" style="width: 800px; height:400px;"></div>
+                <br>
+                <p>
+                    We’ve already established that the US is a high spender – but this chart really emphasizes 
+                    our spending on healthcare specifically – there are countries such as China and India that 
+                    spend 3-4% of their GDP on their healthcare while we are spending no less than 16-17% annually. 
+                    Even Germany, the country with the highest percent after us, spends around 10% of their GDP 
+                    on healthcare which is still significantly lower than the US. 
+                </p>
+                <h4> Education Spending as a % of GDP</h4>
+                <br>
+                <div id="education_percent_gdp_div" style="width: 800px; height:400px;"></div>
+                <br>
+                <p>
+                    When we look at education spending as a percent of GDP, we see similar values to military 
+                    spending – going up to around 6%. Brazil is the country that spends the highest percent of 
+                    their GDP on education – and China is on the lower end spending less than 2% of their GDP on 
+                    education. 
+                </p>
+                <h4>Average Military, Healthcare, and Education Spending - Shown in Relation to the Average Total GDP ( Across 2013-2017)</h4>
+                <br>
+                <div id="avg_compare_gdp_div" style="width: 800px; height:400px;"></div>
+                <br>
+                <p>
+                    Looking at military, healthcare, and education spending in relation to total GDP for each country, we see that yes countries like the US and 
+                    China have high expenditure in these areas - but when we look at this in relation to their GDP, their GDP is so high that it hardly even makes a dent for them. We also
+                    see from this graph that basically every country spends the most of their GDP on healthcare out of the three sectors. 
+                </p>
+                <h1> Spending Per Capita  </h1>
+                <br>
+                <p>
+                    Next we'll take a look at each country's spending in relation to their population - also more simlpy known as the spending per capita. 
+                </p>
+                <h4> Military Spending Per Capita</h4>
+                <br>
+                <div id="mil_per_cap_div" style="width: 800px; height:500px;"></div>
+                <br>
+                <h4> Health Spending Per Capita</h4>
+                <br>
+                <div id="health_per_cap_div" style="width: 800px; height:500px;"></div>
+                <br>
+                <h4> Education Spending Per Capita</h4>
+                <br>
+                <div id="education_per_cap_div" style="width: 800px; height:500px;"></div>
+                <br>
+                <p>
+                    The US and Australia are the leaders when it comes to their military, healthcare,
+                    and education spending per capita. It is interesting to see how countries like China 
+                    who had very high total spending values have significantly low per capita values - meaning
+                    that even even though it seems like they are spending a lot, their population is so large
+                    that the expenditure on each individual is actually very little.
+                </p>
+                
+                <h4> Average Military, Healthcare, and Education Spending Per Capita vs Average GDP Per Capita (2013-2017)</h4>
+                <br>
+                <div id="avg_compare_cap_div" style="width: 800px; height:400px;"></div>
+                <br>
+                <p>
+                    Not surprisingly, the countries with higher GDP per capitas tend to also have a higher military, healthcare, and education 
+                    spending value per capita. Similar to how the highest percentage of overall GDP went towards healthcare, the highest per capita spending 
+                    value is also for healthcare for most, if not all, of the countries. 
+                </p>
+
+
+            </div><!-- content_two -->
+        </div><!-- site_content-->
+
+        <div id="content_footer">
+            <div id="footer">
+                &copy; <script>var d = new Date(); document.write(d.getFullYear());</script>
+                | <a href="http://validator.w3.org/check?uri=referer">HTML5</a>
+                | <a href="http://jigsaw.w3.org/css-validator/check/referer">CSS3</a>
+                | Sabina Azim
+            </div><!-- footer -->
+        </div><!-- content_footer-->
+
+</body>
+
+</html>

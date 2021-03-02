@@ -1,0 +1,210 @@
+<!DOCTYPE html>
+
+<html>
+<head> 
+    <title>Conclusions</title> 
+    <link rel="shortcut icon" type="image/x-icon" href="images/dollarsign.jpg" />
+    <link rel="stylesheet" href="style.css">
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=1024, initial-scale=1.0">
+    <script src="https://www.gstatic.com/charts/loader.js"></script>
+    <script>
+        google.charts.load('current', {'packages':['corechart']});
+        google.charts.setOnLoadCallback(drawAllSheets);
+
+        function drawAllSheets() {
+            drawSheetName('sums_for_pie', 'SELECT A,B', milPieResponseHandler);
+            drawSheetName('sums_for_pie', 'SELECT A,C', healthPieResponseHandler);
+            drawSheetName('sums_for_pie', 'SELECT A,D', eduPieResponseHandler);
+            drawSheetName('growth_value', 'SELECT A,B,C,D', growthValueResponseHandler);
+            drawSheetName('growth_rate', 'SELECT A,B,C,D', growthRateResponseHandler);
+        }//drawAllSheets
+
+        function drawSheetName(sheetName, query, responseHandler){
+        var queryString = encodeURIComponent(query);
+        var query = new google.visualization.Query(
+        'https://docs.google.com/spreadsheets/d/1GXR6MpXO6armxVtj1GCaCp0sXbGGTZiy-9iBxSWEW0k/gviz/tq?sheet='
+        + sheetName + '&headers=1&tq=' + queryString);
+            
+        query.send(responseHandler);
+        } //drawSheetName
+
+        function checkError(response){
+            if (response.isError()) {
+                alert('Error in query: ' + response.getMessage() + ' ' + response.getDetailedMessage());
+                return;
+            }
+        } //checkError
+
+        function milPieResponseHandler(response){
+            checkError(response);
+            var data = response.getDataTable();
+
+            var options = {
+                is3D: true,
+                width: 800,
+                height: 400,
+            };
+
+            var chart = new google.visualization.PieChart(document.getElementById('mil_pie_div'));
+            chart.draw(data, options);
+        } //milPieResponseHandler
+
+        function healthPieResponseHandler(response){
+            checkError(response);
+            var data = response.getDataTable();
+
+            var options = {
+                is3D: true,
+                width: 800,
+                height: 400,
+            };
+
+            var chart = new google.visualization.PieChart(document.getElementById('health_pie_div'));
+            chart.draw(data, options);
+        } //healthPieResponseHandler
+
+        function eduPieResponseHandler(response){
+            checkError(response);
+            var data = response.getDataTable();
+
+            var options = {
+                is3D: true,
+                width: 800,
+                height: 400,
+            };
+
+            var chart = new google.visualization.PieChart(document.getElementById('edu_pie_div'));
+            chart.draw(data, options);
+        } //eduPieResponseHandler
+
+        function growthValueResponseHandler(response){
+            checkError(response);
+            var data = response.getDataTable();
+
+            var options = {
+                vAxis:{title: 'Amount (USD)'},
+                legend: 'top',
+                width: 800,
+                height: 400,
+            };
+
+            var chart = new google.visualization.ColumnChart(document.getElementById('growth_value_div'));
+            chart.draw(data, options);
+        } //growthValueResponseHandler
+
+        function growthRateResponseHandler(response){
+            checkError(response);
+            var data = response.getDataTable();
+
+            var options = {
+                vAxis:{title: '% Change'},
+                legend: 'top',
+                width: 800,
+                height: 400,
+            };
+
+            var chart = new google.visualization.ColumnChart(document.getElementById('growth_rate_div'));
+            chart.draw(data, options);
+        } //growthRateResponseHandler
+    </script> 
+</head>   
+
+<body>
+        <div id="header">
+            <div id="logo">
+                <div id="logo_text">
+                    <h1><a href="index.html"> <br>  G20 Expenditure Analysis</a> </h1>
+                </div><!-- logo text-->
+            </div><!-- logo -->
+
+            <div id="menubar">
+                <ul id="menu">
+                    <li><a href="index.html">Home</a></li>
+                    <li><a href="spending_analysis.html">Spending Analysis</a></li>
+                    <li class="selected"><a href="conclusions.html">Conclusions</a></li>
+                    <li><a href="sources.html">Sources</a></li>
+                </ul><!-- menu -->
+            </div><!-- menu -->
+        </div><!-- header -->
+        <div id="site_content">
+
+            <div id="content_two">
+                <h1>Conclusions</h1>
+                <p>
+                    Over all, there is no denying the fact that the US puts an immense amount of money into their military, healthcare, and 
+                    education – but there are many different perspectives with which you can look at expenditure. Russia spends a higher 
+                    percentage of their GDP on their military than the US and the US also spends a lower percentage of their GDP on education 
+                    than many countries – including Brazil, the UK and Australia. When you look at spending relative to population, Australia 
+                    spends more per person on their education than the US. 
+                    <br> <br>
+                    When comparing how countries are spending their money overall, it’s clear that healthcare seems to be the top priority. 
+                    Education comes in second – but I was surprised to see how close education and military spending was for some countries – 
+                    especially the US and China. I wasn’t really surprised since I know these countries tend to spend a lot on their military, 
+                    but seeing it in numbers was still shocking. 
+                </p>
+                <h4> Percent in Overall Spending Across All 12 Countries from 2013-2017</h4>
+                <br>
+                <p>
+                    I thought it would be interesting to look at the sum of spending across all 12 countries during this 5 year period and 
+                    see what percent of the total expenditure each country makes up. 
+                </p>
+                <br>
+                <h6>Military Spending</h6>
+                <div id="mil_pie_div" style="width: 800px; height:400px;"></div>
+                <h6> Healthcare Spending</h6>
+                <div id="health_pie_div" style="width: 800px; height:400px;"></div>
+                <h6>Education Spending</h6>
+                <div id="edu_pie_div" style="width: 800px; height:400px;"></div>
+                <p>
+                    The US consistantly makes up the highest percentage of expenditure - and in the case of military and healthcare 
+                    the US makes up over HALF of all of the spending across these 12 countries. This again really drives home how much 
+                    the US spends across these three sectors. 
+                </p>
+                <h3> What can we expect to see in the future? </h3>
+                <h4>Change in Spending (Absolute) from 2013 to 2017</h4>
+                <div id="growth_value_div" style="width: 800px; height:400px;"></div>
+                <br>
+                <p>
+                    When looking at the absolute change from 2013-2017, China and India are the only countries with 
+                    greater spending across all three sectors. The United States had a decrease in military spending but 
+                    spent significantly more on healthcare and education in 2017 than in 2013. 
+                </p>
+                <h4> Change in Spending (%) from 2013 to 2017 </h4>
+                <div id="growth_rate_div" style="width: 800px; height:400px;"></div>
+                <br>
+                <p>
+                    Now looking at the rate of change from 2013 to 2017 – it is clear to see that India and China 
+                    are growing the fastest. They both had an increase of over 20% in each sector. India however 
+                    grew the fastest specifically in education and military spending while China was the fastest growing 
+                    in healthcare spending. Russia is in the lead when it comes to the country who is actually decreasing their 
+                    spending at the highest rate. We see a lot of European countries – Italy, Germany, the UK – also decreasing 
+                    their spending for the most part. 
+                    <br> <br> 
+                    Some final thoughts... 
+                    <br> <br>
+                    Doing this project as someone living through a pandemic in 2021, it is easy to assume 
+                    that these trends might not hold up during this time. Using the years 2013-2017 to do this analysis was the 
+                    most accurate way for me to compare the spending between these countries because 2017 was one of the most recent 
+                    years for which I could find the most accurate data across all three sectors. I think it would be safe to say that 
+                    most of these countries have been hit very hard by Covid-19 and their healthcare spending has probably increased 
+                    significantly from the years 2013-2017. I also wouldn’t be surprised if their education and military spending has 
+                    decreased since they are spending so much on healthcare due to the pandemic. 
+                </p>
+            
+            </div><!-- content_two -->
+        </div><!-- site_content-->
+
+        <div id="content_footer">
+            <div id="footer">
+                &copy; <script>var d = new Date(); document.write(d.getFullYear());</script>
+                | <a href="http://validator.w3.org/check?uri=referer">HTML5</a>
+                | <a href="http://jigsaw.w3.org/css-validator/check/referer">CSS3</a>
+                | Sabina Azim
+            </div><!-- footer -->
+        </div><!-- content_footer-->
+
+</body>
+
+</html>

@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+
+<html>
+<head>
+    <title> G20 Expenditure Analysis (Home)</title>
+    <link rel="shortcut icon" type="image/x-icon" href="images/dollarsign.jpg" />
+    <link rel="stylesheet" href="style.css">
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=1024, initial-scale=1.0">
+    <script src="https://www.gstatic.com/charts/loader.js"></script>
+    <script>
+        google.charts.load('current', {'packages':['geochart']}); //calling geochart for the world map 
+        google.charts.setOnLoadCallback(drawAllSheets);
+
+        function drawAllSheets() {
+            drawSheetName('country_info', 'SELECT A,B,C', countryInfoResponseHandler); 
+        }//drawAllSheets 
+
+        function drawSheetName(sheetName, query, responseHandler){
+        var queryString = encodeURIComponent(query);
+        var query = new google.visualization.Query(
+        'https://docs.google.com/spreadsheets/d/1GXR6MpXO6armxVtj1GCaCp0sXbGGTZiy-9iBxSWEW0k/gviz/tq?sheet='
+        + sheetName + '&headers=1&tq=' + queryString); //loading the google sheets with my dating 
+            
+        query.send(responseHandler);
+        } //drawSheetName
+
+        function checkError(response){
+            if (response.isError()) {
+                alert('Error in query: ' + response.getMessage() + ' ' + response.getDetailedMessage());
+                return;
+            }
+        } //checkError
+
+        function countryInfoResponseHandler(response){
+            checkError(response);
+            var data = response.getDataTable();
+
+            var options = { //setting color and dimensions 
+                colorAxis: {colors: ['#800808', '#800808']},
+                width: 600,
+                height: 300,
+            };
+
+            var chart = new google.visualization.GeoChart(document.getElementById('country_info_div'));
+            chart.draw(data, options);
+        } //countryInfoResponseHandler
+    </script>     
+</head>   
+
+<body>
+        <div id="header"> 
+            <div id="logo">
+                <div id="logo_text">
+                    <h1><a href="index.html"> <br>  G20 Expenditure Analysis</a> </h1>
+                </div><!-- logo text-->
+            </div><!-- logo -->
+
+            <div id="menubar"> 
+                <ul id="menu">
+                    <li class="selected"><a href="index.html">Home</a></li>
+                    <li><a href="spending_analysis.html">Spending Analysis</a></li>
+                    <li><a href="conclusions.html">Conclusions</a></li>
+                    <li><a href="sources.html">Sources</a></li>
+                </ul><!-- menu -->
+            </div><!-- menu -->
+        </div><!-- header -->
+        <div id="site_content">
+            <div class="sidebar">
+                <h4>About Me: </h4>
+                <p>
+                    Thanks for stopping by my project page! My name is Sabina Azim and I'm currently pursuing 
+                    my M.S. in Data Science at the George Washington University. This project is to help me gain 
+                    more experience with data visualization. Specifically i'll be working with Google API, HTML, 
+                    and CSS. 
+                </p>
+
+                <h4> Contact Me:  </h4>
+                <ul>
+                    <li><a href="mailto:sazim89@gwu.edu"> Email</a></li>
+                    <li><a href="https://github.com/sabinaazim97"> Github</a></li>
+                    <li><a href="https://www.linkedin.com/in/sabinaazim/"> LinkedIn</a></li>
+                </ul>
+            </div><!-- sidebar -->
+
+            <div id="content">
+                <p>
+                    This project will compare the military, education, and healthcare expenditure of various nations 
+                    in the G20. The G20 consists of 19 countries (+ the European Union) that aim to achieve global 
+                    economic stability. Specifically, I will be looking at the total overall spending in each of 
+                    these departments, as well as in relation to each country's GDP and population. All analysis will 
+                    be done over the five year period of 2013-2017. 
+                <br><br>
+                We will be working with the countries highlighted on the following map (data displayed on map is from 
+                2017):
+                </p>
+                <br>
+                <div id="country_info_div" style="width: 600px; height:300px;"></div>
+                <br>
+                <h4> Publications: </h4>
+                <p>
+                You can also view this project at the following locations:
+                <br> 
+                <br>
+                My Portfolio - <a href="https://sabinaazim97.github.io/"> View on Portfolio</a>
+                <br>
+                Zenodo - <a href="https://zenodo.org/record/4574382#.YD6UM5NKjPg"> View on Zenodo</a>
+                <br>
+                Github - <a href="https://github.com/sabinaazim97/Spending_Analysis_2021"> View on Github</a>
+                </p>
+            </div><!-- content -->
+        </div><!-- site_content-->
+
+        <div id="content_footer">
+            <div id="footer">
+                &copy; <script>var d = new Date(); document.write(d.getFullYear());</script>
+                | <a href="http://validator.w3.org/check?uri=referer">HTML5</a>
+                | <a href="http://jigsaw.w3.org/css-validator/check/referer">CSS3</a>
+                | Sabina Azim
+            </div><!-- footer -->
+        </div><!-- content_footer-->
+
+</body>
+</html>
